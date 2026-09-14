@@ -1,0 +1,35 @@
+[project]
+name = "translate-demo"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "datasets>=5.0.1",
+    "dotenv>=0.9.9",
+    "onnxruntime>=1.24.0",
+    "onnxscript>=0.7.1",
+    "openai>=3.8.0",
+    "safetensors>=0.8.0",
+    "slopmachine-embedding-laion-clap-text-int8>=0.1.0a1",
+    "torch>=2.14.0",
+]
+
+[[tool.uv.index]]
+name = "slopmachine"
+url = "https://m1nt-s0da.github.io/slopmachine-pypi/"
+
+[[tool.uv.index]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch" }
+torchvision = { index = "pytorch" }
+torchaudio = { index = "pytorch" }
+slopmachine-embedding-laion-clap-text-int8 = { index = "slopmachine" }
+
+[tool.uv]
+exclude-newer-package = { slopmachine-embedding = false, slopmachine-embedding-laion-clap-text-int8 = false }
+
