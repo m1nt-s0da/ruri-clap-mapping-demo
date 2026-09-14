@@ -14,7 +14,7 @@ DEFAULT_MODEL_PATH = PROJECT_ROOT / ".var" / "output" / "model.onnx"
 
 async def run_demo(
     model_path: Path, japanese_texts: list[str], english_texts: list[str]
-) -> tuple[np.ndarray, np.ndarray]:
+) -> np.ndarray:
     if len(japanese_texts) != len(english_texts):
         raise ValueError("Japanese and English text counts must match")
 
@@ -38,16 +38,18 @@ async def run_demo(
         np.ndarray,
         session.run([model_output.name], {model_input.name: ruri_embedding})[0],
     )
-    norm = np.linalg.norm(projected_embedding, axis=-1, keepdims=True)
-    projected_embedding_normalized = projected_embedding / norm
-    return np.mean(np.square(projected_embedding - clap_embedding), axis=-1), np.mean(
-        np.square(projected_embedding_normalized - clap_embedding), axis=-1
+    projected_embedding_normalized = projected_embedding / np.linalg.norm(
+        projected_embedding, axis=-1, keepdims=True
     )
+    clap_embedding_normalized = clap_embedding / np.linalg.norm(
+        clap_embedding, axis=-1, keepdims=True
+    )
+    return np.sum(projected_embedding_normalized * clap_embedding_normalized, axis=-1)
 
 
 def main() -> None:
     parser = ArgumentParser(
-        description="Calculate MSE for a Japanese Ruri-v3 to English CLAP-text mapping."
+        description="Calculate cosine similarity for a Japanese Ruri-v3 to English CLAP-text mapping."
     )
     parser.add_argument(
         "--model",
@@ -78,9 +80,7 @@ def main() -> None:
     if len(japanese_texts) != len(english_texts):
         parser.error("--ja and --en must be provided the same number of times")
 
-    mse, normalized_mse = asyncio.run(
-        run_demo(args.model, japanese_texts, english_texts)
-    )
+    cosine_similarity = asyncio.run(run_demo(args.model, japanese_texts, english_texts))
     print(f"model: {args.model}")
     print(f"batch size: {len(japanese_texts)}")
     for index, (japanese_text, english_text) in enumerate(
@@ -88,8 +88,9 @@ def main() -> None:
     ):
         print(f"pair {index} ruri-v3 input: 文章: {japanese_text}")
         print(f"pair {index} clap-text input: {english_text}")
-        print(f"pair {index} mapping MSE: {mse[index - 1]:.8f}")
-        print(f"pair {index} mapping MSE (normalized): {normalized_mse[index - 1]:.8f}")
+        print(
+            f"pair {index} mapping cosine similarity: {cosine_similarity[index - 1]:.8f}"
+        )
 
 
 if __name__ == "__main__":
