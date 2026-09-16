@@ -13,6 +13,9 @@ import numpy as np
 load_dotenv()
 
 DATASET_DB = os.environ["DATASET_DB"]
+OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_MODEL = os.environ["OPENAI_TRANSLATE_MODEL"]
 
 
 def open_db():
@@ -72,8 +75,8 @@ async def main():
     print(f"Total rows: {rows}")
 
     client = AsyncOpenAI(
-        base_url=os.getenv("OPENAI_BASE_URL"),
-        api_key=os.getenv("OPENAI_API_KEY"),
+        base_url=OPENAI_BASE_URL,
+        api_key=OPENAI_API_KEY,
     )
 
     with open(os.path.dirname(__file__) + "/prompt.txt", "r", encoding="utf-8") as f:
@@ -83,7 +86,7 @@ async def main():
 
     async def translate(ja: str):
         completion = await client.responses.create(
-            model="translategemma:4b",
+            model=OPENAI_MODEL,
             instructions=prompt,
             input=ja,
             reasoning={

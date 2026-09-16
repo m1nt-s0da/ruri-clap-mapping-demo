@@ -7,11 +7,13 @@ requires-python = ">=3.14"
 dependencies = [
     "datasets>=5.0.1",
     "dotenv>=0.9.9",
+    "filelock>=3.32.5",
     "onnxruntime>=1.24.0",
     "onnxscript>=0.7.1",
     "openai>=3.8.0",
     "safetensors>=0.8.0",
     "slopmachine-embedding-laion-clap-text-int8>=0.1.0a1",
+    "slopmachine-embedding-ruri-v3-130m-int8>=0.1.0a1",
     "torch>=2.14.0",
 ]
 
@@ -29,7 +31,8 @@ torch = { index = "pytorch" }
 torchvision = { index = "pytorch" }
 torchaudio = { index = "pytorch" }
 slopmachine-embedding-laion-clap-text-int8 = { index = "slopmachine" }
+slopmachine-embedding-ruri-v3-130m-int8 = { index = "slopmachine" }
 
 [tool.uv]
-exclude-newer-package = { slopmachine-embedding = false, slopmachine-embedding-laion-clap-text-int8 = false }
+exclude-newer-package = { slopmachine-embedding = false, slopmachine-embedding-laion-clap-text-int8 = false, slopmachine-embedding-ruri-v3-130m-int8=false }
 

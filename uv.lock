@@ -8,12 +8,13 @@ resolution-markers = [
 ]
 
 [options]
-exclude-newer = "2026-09-07T18:08:28.4455046Z"
+exclude-newer = "2026-09-09T10:46:20.6487793Z"
 exclude-newer-span = "P1W"
 
 [options.exclude-newer-package]
-slopmachine-embedding-laion-clap-text-int8 = false
 slopmachine-embedding = false
+slopmachine-embedding-laion-clap-text-int8 = false
+slopmachine-embedding-ruri-v3-130m-int8 = false
 
 [[package]]
 name = "aiohappyeyeballs"
@@ -1354,6 +1355,19 @@ wheels = [
 ]
 
 [[package]]
+name = "slopmachine-embedding-ruri-v3-130m-int8"
+version = "0.1.0a1"
+source = { registry = "https://m1nt-s0da.github.io/slopmachine-pypi/" }
+dependencies = [
+    { name = "onnxruntime" },
+    { name = "slopmachine-embedding" },
+    { name = "tokenizers" },
+]
+wheels = [
+    { url = "https://storage.googleapis.com/slopmachine/pypi/slopmachine-embedding-ruri-v3-130m-int8/slopmachine_embedding_ruri_v3_130m_int8-0.1.0a1-py3-none-any.whl", hash = "sha256:dac74d6307bd56943e76e32cde14ed0315e4bd87a52c0c0b84c15debdd9c2cfa" },
+]
+
+[[package]]
 name = "sniffio"
 version = "1.3.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1455,11 +1469,13 @@ source = { virtual = "." }
 dependencies = [
     { name = "datasets" },
     { name = "dotenv" },
+    { name = "filelock" },
     { name = "onnxruntime" },
     { name = "onnxscript" },
     { name = "openai" },
     { name = "safetensors" },
     { name = "slopmachine-embedding-laion-clap-text-int8" },
+    { name = "slopmachine-embedding-ruri-v3-130m-int8" },
     { name = "torch" },
 ]
 
@@ -1467,11 +1483,13 @@ dependencies = [
 requires-dist = [
     { name = "datasets", specifier = ">=5.0.1" },
     { name = "dotenv", specifier = ">=0.9.9" },
+    { name = "filelock", specifier = ">=3.32.5" },
     { name = "onnxruntime", specifier = ">=1.24.0" },
     { name = "onnxscript", specifier = ">=0.7.1" },
     { name = "openai", specifier = ">=3.8.0" },
     { name = "safetensors", specifier = ">=0.8.0" },
     { name = "slopmachine-embedding-laion-clap-text-int8", specifier = ">=0.1.0a1", index = "https://m1nt-s0da.github.io/slopmachine-pypi/" },
+    { name = "slopmachine-embedding-ruri-v3-130m-int8", specifier = ">=0.1.0a1", index = "https://m1nt-s0da.github.io/slopmachine-pypi/" },
     { name = "torch", specifier = ">=2.14.0", index = "https://download.pytorch.org/whl/cu130" },
 ]
 

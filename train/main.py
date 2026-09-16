@@ -31,6 +31,10 @@ def train_main(
         model.parameters(), lr=1e-3, betas=(0.9, 0.999), eps=1e-8, weight_decay=1e-4
     )
 
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+        optimizer, T_max=epochs, eta_min=1e-6
+    )
+
     for epoch in tqdm(range(epochs), desc="Epochs"):  # Example: train for 10 epochs
         for batch in tqdm(dataloader, desc="Batches"):
             src_ja_anc, src_ja_pos, src_en_pos, dst_en_pos, dst_en_neg = batch
@@ -65,6 +69,7 @@ def train_main(
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+            scheduler.step()
 
             tqdm.write(f"Epoch [{epoch+1}/10] Loss: {loss.item():.4f}")
             tqdm.write(
